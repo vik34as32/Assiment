@@ -1,35 +1,33 @@
-import { Dispatch } from 'redux';
 import {GET_ALL_PRODUCTS_START,GET_ALL_PRODUCTS_SUCCESS,GET_ALL_PRODUCTS__ERROR} from '../types/product-type';
 
 export const getAllProducts = () => {
-	alert("hello")
 	return (dispatch) => {
-		dispatch(getAllUserStart());
-
-		fetch.get('https://dummyjson.com/products')
+		dispatch(getAllProductStart());
+		fetch('https://dummyjson.com/products')
+			.then(response => response.json())
 			.then(response => {
-				dispatch(getAllUserSuccess(response.data));
+				dispatch(getAllProuctSuccess(response.products));
 			})
 			.catch(err => {
-				dispatch(getAllUserError(err));
+				dispatch(getAllProductError(err));
 			});
 	};
 };
 
-const getAllUserStart = () => {
+const getAllProductStart = () => {
 	return {
 		type: GET_ALL_PRODUCTS_START
 	};
 };
 
-const getAllUserSuccess = (data) => {
+const getAllProuctSuccess = (data) => {
 	return {
 		type: GET_ALL_PRODUCTS_SUCCESS,
 		payload: data
 	};
 };
 
-const getAllUserError = (data) => {
+const getAllProductError = (data) => {
 	return {
 		type: GET_ALL_PRODUCTS__ERROR,
 		payload: data
