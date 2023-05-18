@@ -5,13 +5,43 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+
+// const SeracBox=()=>{
+//   return(
+//     <>
+//     <div className='container'>
+//       <div className='input-wrap'>
+//         <i className="fas fa-search"></i>
+//         <label 
+//           for="product-search" 
+//           id="input-label"
+//         >
+//           Product Search
+//         </label>
+//         <input 
+//           type="text" 
+//           name="product-search" 
+//           id="product-search" 
+//           placeholder="Search Products"
+//         />
+//         <i 
+       
+//           className="fas fa-times"
+//         ></i>
+//       </div>
+//     </div>
+//     </>
+//   )
+// }
 
 
 
@@ -29,28 +59,45 @@ const classes = {
 
 
 const ListOfItem =()=>{
+const pageSize = 9;
+
+
   const dispatch = useDispatch();
   const { product, error, loading }= useSelector((state) => { return state.Product });
   const [ProductOfList,setProductOfList] =useState([])
-
-
-
-
-  console.log(ProductOfList)
+  window.localStorage.setItem('wishtlist','')
 
   const addToWISHLIST=(data,index)=>{
-    const itemdata =JSON.stringify(data)
-    window.localStorage.setItem(index,itemdata)
+    const items=[]
+    const localStorageData =window.localStorage.getItem('wishtlist')
+
+    if(localStorageData===''){
+        items.push(data)
+        const jsonData = JSON.stringify(items);
+        window.localStorage.setItem('wishtlist', jsonData);
+    }else{
+          const parsedData = JSON.parse(localStorageData);
+          items.push(...parsedData);
+          items.push(data)
+          const jsonData = JSON.stringify(items);
+          window.localStorage.setItem('wishtlist', jsonData);
+    }  
   }
 
 
-  const Pagination=()=>{
-    const pageSize = 9;
-    const startIndex = (1 - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
+  const Pagination=(page)=>{
+    let startIndex = (page -1) * pageSize;
+    let endIndex = startIndex + pageSize;
     const ProductData=product.slice(startIndex, endIndex)
     setProductOfList(ProductData)
   }
+
+
+//  const calculatePagesCount =(totalCount,pageSize)=>{
+//   return count = totalCount < pageSize ? 1 : Math.ceil(totalCount / pageSize);
+//  } 
+const  numberOfItems = product.length>0?product.length:0
+const numberOfPages = Math.ceil(numberOfItems / pageSize);
 
 
 
@@ -60,13 +107,16 @@ const ListOfItem =()=>{
 
   useEffect(()=>{
     if(product.length>0){
-      Pagination()
+      Pagination(1)
+     
     }
+  
 
   },[product])
 
     return(
       <>
+        
         <div style={classes.root}>
           <Grid container spacing={2}>
             {
@@ -101,14 +151,22 @@ const ListOfItem =()=>{
                           </CardActions>
                         </Card>
                       </Grid>
+                      
                     </>
                   )
                 }) :
                 <h1>No Data</h1>
             }
+            {
+              Array.from({ length: numberOfPages },(_, index)=>{
+               
+                 return  <Button  onClick={()=>{Pagination(index+1)}}>{index+1}</Button>
+              })
+            }
           </Grid>
-        </div>
-
+         
+        </div> 
+      
       </>
     )
 }
