@@ -66,7 +66,7 @@ const Wishtlist =()=>{
                       </Grid>
                             </>
                         )
-                    }):<h5>Loading..................</h5>
+                    }):<h1>No Data My WISHLIST</h1>
                    
                  
                 }
