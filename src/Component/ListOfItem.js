@@ -7,12 +7,11 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import ShareIcon from '@mui/icons-material/Share';
+
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 
 // const SeracBox=()=>{
@@ -65,6 +64,8 @@ const pageSize = 9;
   const dispatch = useDispatch();
   const { product, error, loading }= useSelector((state) => { return state.Product });
   const [ProductOfList,setProductOfList] =useState([])
+  const [inputValue,setinputValue]=useState("")
+  const [suggestion,setsuggestion]=useState([])
   window.localStorage.setItem('wishtlist','')
 
   const addToWISHLIST=(data,index)=>{
@@ -93,11 +94,32 @@ const pageSize = 9;
   }
 
 
-//  const calculatePagesCount =(totalCount,pageSize)=>{
-//   return count = totalCount < pageSize ? 1 : Math.ceil(totalCount / pageSize);
-//  } 
 const  numberOfItems = product.length>0?product.length:0
 const numberOfPages = Math.ceil(numberOfItems / pageSize);
+
+
+const handleInputChange =(event)=>{
+    const inputValue =event.target.value
+    setinputValue(inputValue)
+    // Filter the suggestions based on the search query
+    const filteredSuggestions = product.filter((item) =>
+    item.title.toLowerCase().includes(inputValue.toLowerCase())
+  );
+  setsuggestion(filteredSuggestions);
+}
+
+
+const handleClickSuggestion=(data)=>{
+  setinputValue(data.title)
+  setsuggestion([])
+}
+
+const SuggestList =suggestion.map((data,index)=>{
+    return(
+      <li key={index} onClick={()=>{handleClickSuggestion(data)}}>{data.title}</li>
+    )
+})
+
 
 
 
@@ -108,15 +130,31 @@ const numberOfPages = Math.ceil(numberOfItems / pageSize);
   useEffect(()=>{
     if(product.length>0){
       Pagination(1)
-     
-    }
-  
+     }
 
   },[product])
 
     return(
       <>
-        
+      
+             <Box
+      component="form"
+      sx={{
+        '& > :not(style)': { m: 1, width: '120ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField id="standard-basic" label="Search" variant="standard" value={inputValue}   onChange={handleInputChange} />
+    </Box>
+     {
+      suggestion.length>0 &&
+      <ul>
+          {SuggestList}
+      </ul>
+     } 
+ <br/><br/>
+
         <div style={classes.root}>
           <Grid container spacing={2}>
             {

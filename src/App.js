@@ -8,7 +8,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<ListOfItem />} />
-        <Route path="/my-favorite" element={<FavouriteItem />} />
+        <Route path="/my-wishtlist" element={<FavouriteItem />} />
       </Routes>
     </>
   );

@@ -17,7 +17,7 @@ const NavBar = () => {
                             <NavLink  className="nav-link" to="/">List Of Items</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/my-favorite"><span>My Favorite</span><FavoriteIcon/></NavLink>
+                            <NavLink className="nav-link" to="/my-wishtlist"><span>My Wishtlist</span><FavoriteIcon/></NavLink>
                         </li>
                     </ul>
                 </div>
