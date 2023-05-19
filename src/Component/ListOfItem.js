@@ -106,6 +106,7 @@ const handleInputChange =(event)=>{
     item.title.toLowerCase().includes(inputValue.toLowerCase())
   );
   setsuggestion(filteredSuggestions);
+  setProductOfList(filteredSuggestions)
 }
 
 
