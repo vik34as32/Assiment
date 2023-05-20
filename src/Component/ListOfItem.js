@@ -66,13 +66,13 @@ const pageSize = 9;
   const [ProductOfList,setProductOfList] =useState([])
   const [inputValue,setinputValue]=useState("")
   const [suggestion,setsuggestion]=useState([])
-  window.localStorage.setItem('wishtlist','')
+  
 
   const addToWISHLIST=(data,index)=>{
     const items=[]
     const localStorageData =window.localStorage.getItem('wishtlist')
-
-    if(localStorageData===''){
+      debugger
+    if(localStorageData==''){
         items.push(data)
         const jsonData = JSON.stringify(items);
         window.localStorage.setItem('wishtlist', jsonData);
